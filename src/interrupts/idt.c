@@ -1,9 +1,11 @@
 #include "idt.h"
-#include "../stdint.h"
 #include "../vga.h"
+
 
 struct idt_entry_struct idtEntry[256];
 struct idt_ptr_struct idtPtr;
+
+extern void idt_flush(uint32_t);
 
 void initIdt(){
     idtPtr.base = (uint32_t)&idtEntry;
@@ -53,6 +55,8 @@ void initIdt(){
 
     setIdtGate(128, (uint32_t)isr128, 0x08, 0x8E); //system call
     setIdtGate(177, (uint32_t)isr177, 0x08, 0x8E); //system call
+
+    idt_flush((uint32_t)&idtPtr);
 };
 
 void setIdtGate(uint32_t num, uint32_t base, uint16_t selector, uint8_t flags){
@@ -64,12 +68,12 @@ void setIdtGate(uint32_t num, uint32_t base, uint16_t selector, uint8_t flags){
 
 }
 
-unsigned char* exceptionMessages[]={
+unsigned char *exceptionMessages[]={
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt",
     "Breakpoint",
-    "Ino Detected Overflow",
+    "Ino Detected Overflow",    // print (1/0);
     "Out of Bound",
     "Invalid Opcode",
     "No Coprocessor",
@@ -99,7 +103,7 @@ unsigned char* exceptionMessages[]={
     "Reserved"
 };
 
-void isrHandler(struct IntRegisters* regs) {
+void isrHandler(struct IntRegisters *regs) {
     if(regs -> int_no < 32){
         print(exceptionMessages[regs -> int_no]);
         print("\n");
@@ -113,7 +117,7 @@ void *irq_routines[16] = {
     0,0,0,0,0,0,0,0
 };
 
-void irq_istall_handler(int irq, void (*handler)(struct IntRegisters *r)){
+void irq_install_handler(int irq, void (*handler)(struct IntRegisters *r)){
     irq_routines[irq] = handler;
 };
 
@@ -135,4 +139,4 @@ void irq_handler(struct IntRegisters* regs){
     }
 
     outPortB(0x20,0x20);
-};
+}; 

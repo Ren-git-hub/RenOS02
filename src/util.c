@@ -8,6 +8,6 @@ void setMemory(void *dest,char val, uint32_t count){
 }
 
 void outPortB(uint16_t port, uint8_t value){
-    asm volatile ("outb %1,%0"::"dN" (port), "a" (value));
+    asm volatile ("outb %1, %0"::"dN" (port), "a" (value));
 
 }

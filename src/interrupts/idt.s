@@ -8,6 +8,7 @@
 %macro ISR_NOERRCODE 1
    global isr%1
    isr%1:
+   CLI
    PUSH LONG 0
    PUSH LONG %1
    JMP isr_common_stub
@@ -16,6 +17,7 @@
 %macro ISR_ERRCODE 1
    global isr%1
    isr%1:
+   CLI
    PUSH LONG %1
    JMP isr_common_stub
 %endmacro

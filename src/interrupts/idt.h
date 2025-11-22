@@ -12,12 +12,12 @@ struct  idt_entry_struct{
 
 struct idt_ptr_struct{
     uint16_t limit;
-    uint16_t base;
+    uint32_t base;
 }__attribute((packed));
 
 void initIdt();
 void setIdtGate(uint32_t num, uint32_t base, uint16_t selector, uint8_t flags);
-void isrHandler(struct IntRegisters* regs);
+void isrHandler(struct IntRegisters *regs);
 
 extern void isr0();
 extern void isr1();
