@@ -2,6 +2,7 @@
 #include "util.h"
 
 extern void gdt_flush(uint32_t);
+extern void tss_flush();
 
 struct gdt_entry_struct gdt_entries[6];
 struct gdt_ptr_struct gdt_ptr;
@@ -18,7 +19,7 @@ void initGdt(){
     setGdtGate(4,0,0xFFFFFFFF,0xF2,0xCF); //User data segment
     writeTSS(5,0x10,0x0);
 
-    gdt_flush(&gdt_ptr);
+    gdt_flush((uint32_t)&gdt_ptr);
     tss_flush();
 
 }
