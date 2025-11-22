@@ -1,5 +1,6 @@
 #include "gdt.h"
 #include "util.h"
+#include "vga.h"
 
 extern void gdt_flush(uint32_t);
 extern void tss_flush();
