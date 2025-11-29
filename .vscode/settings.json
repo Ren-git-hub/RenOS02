@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "idt.h": "c"
+        "idt.h": "c",
+        "vga.h": "c",
+        "stdio.h": "c"
     }
 }

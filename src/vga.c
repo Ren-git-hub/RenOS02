@@ -48,6 +48,13 @@ void print(const char* s){
             case '\r':
                 column=0;
                 break;
+            case '\b':
+                if(column == 0 && line != 0){
+                    line--;
+                    column = width;
+                }
+                vga[line * width + (column--)] = ' ' | currentColor;
+                break;
             case '\t':
                 if(column == width){
                     newLine();
